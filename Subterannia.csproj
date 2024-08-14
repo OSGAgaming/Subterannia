@@ -5,12 +5,9 @@
 
 	<!-- General -->
 	<PropertyGroup>
-		
+	  <TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 
 	<!-- References -->
-	<ItemGroup>
-		
-	</ItemGroup>
 
 </Project>
