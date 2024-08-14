@@ -1,5 +1,6 @@
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Generation;
+using Terraria.GameContent.UI.States;
 using Terraria.Graphics.Capture;
 using Terraria.ID;
 using Terraria.IO;
@@ -20,7 +22,7 @@ namespace Subterannia.Core.Subworlds
 {
     public class SubworldManager
     {
-        internal enum EEServerState : byte
+        internal enum SubworldServerState : byte
         {
             None,
             SinglePlayer,
@@ -30,7 +32,7 @@ namespace Subterannia.Core.Subworlds
         private static string LinuxPath;
         private static WorldGenerator _generator;
 
-        internal static EEServerState serverState = EEServerState.None;
+        internal static SubworldServerState serverState = SubworldServerState.None;
 
         public static Process LinuxModServer = new Process();
 
@@ -90,6 +92,12 @@ namespace Subterannia.Core.Subworlds
             ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, new T());
         }
 
+        public static void ReturnToMainWorld()
+        {
+            SoundEngine.PlaySound(SoundID.MenuClose);
+            PreSaveAndQuit();
+            ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, Main.LocalPlayer.GetModPlayer<SubworldPlayer>().PrimaryWorldName);
+        }
 
         public static void SaveAndQuitCallBack(object threadContext)
         {
@@ -118,13 +126,16 @@ namespace Subterannia.Core.Subworlds
             Player.SavePlayer(Main.ActivePlayerFileData);
             Player.ClearPlayerTempInfo();
             Rain.ClearRain();
-            if (netMode == 0)
+            if (netMode == NetmodeID.SinglePlayer)
             {
                 WorldFile.SaveWorld();
+                serverState = SubworldServerState.SinglePlayer;
+
                 //SoundEngine.PlaySound(10);
             }
             else
             {
+                serverState = SubworldServerState.MultiPlayer;
                 Netplay.Disconnect = true;
                 Main.netMode = 0;
             }
@@ -149,7 +160,10 @@ namespace Subterannia.Core.Subworlds
             WorldGen.clearWorld();
             GenerateWorld((Subworld)threadContext, Main.ActiveWorldFileData.Seed, null);
             WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
-
+            if (Main.menuMode == 10 || Main.menuMode == 888)
+            {
+                Main.menuMode = 6;
+            }
             Main.ActiveWorldFileData = WorldFile.GetAllMetadata($@"{LinuxPath}\{(threadContext as Subworld).Name}.wld", false);
 
             WorldGen.playWorld();
@@ -179,31 +193,6 @@ namespace Subterannia.Core.Subworlds
         }
 
         public static string ConvertToSafeArgument(string arg) => Uri.EscapeDataString(arg);
-
-        public static WorldFileData CreateSubworldMetaData(string name, bool cloudSave, string path)
-        {
-            WorldFileData existing = new WorldFileData(path, cloudSave)
-            {
-                Name = name,
-                //existing.GameMode = GameMode;
-                CreationTime = DateTime.Now,
-                Metadata = FileMetadata.FromCurrentSettings(FileType.World)
-            };
-            existing.SetFavorite(favorite: false);
-            existing.WorldGeneratorVersion = 987842478081uL;
-            existing.UniqueId = Guid.NewGuid();
-
-            if (Main.DefaultSeed == "")
-            {
-                existing.SetSeedToRandom();
-            }
-            else
-            {
-                existing.SetSeed(Main.DefaultSeed);
-            }
-
-            return existing;
-        }
         public static string SubworldPath => $@"{Main.SavePath}\Worlds\LinuxMod";
         private static void OnWorldNamed(object subworld)
         {
@@ -233,7 +222,7 @@ namespace Subterannia.Core.Subworlds
                 {
                     CreateNewWorld(Subworld);
 
-                    Main.ActiveWorldFileData = CreateSubworldMetaData(Name, SocialAPI.Cloud != null && SocialAPI.Cloud.EnabledByDefault, EESubworldPath);
+                    Main.ActiveWorldFileData = WorldFile.CreateMetadata(Name, SocialAPI.Cloud != null && SocialAPI.Cloud.EnabledByDefault, Main.GameMode);
                     Main.worldName = Name.Trim();
 
                     return;
@@ -242,13 +231,15 @@ namespace Subterannia.Core.Subworlds
             else
             {
                 Main.LocalPlayer.GetModPlayer<SubworldPlayer>().InSubworld = false;
-                Main.ActiveWorldFileData = WorldFile.GetAllMetadata($@"{LinuxPath}\{Name}.wld", false);
+                Main.ActiveWorldFileData = WorldFile.GetAllMetadata($@"{Main.SavePath}\Worlds\{Name}.wld", false);
                 Main.ActivePlayerFileData.SetAsActive();
             }
 
-            if (serverState == EEServerState.SinglePlayer)
+            if (serverState == SubworldServerState.SinglePlayer)
             {
+                SoundEngine.PlaySound(SoundID.MenuOpen);
                 WorldGen.playWorld();
+                Main.menuMode = 10;
             }
             else
             {

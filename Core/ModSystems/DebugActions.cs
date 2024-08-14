@@ -18,7 +18,15 @@ public class DebugActions : ModSystem
 
         if (!Main.gameMenu && Main.LocalPlayer.controlHook)
         {
-            SubworldManager.EnterSubworld<CutsceneSubworld>();
+            if(!Main.LocalPlayer.GetModPlayer<SubworldPlayer>().InSubworld)
+            {
+                SubworldManager.EnterSubworld<CutsceneSubworld>();
+            }
+            else
+            {
+                SubworldManager.ReturnToMainWorld();
+            }
+            Main.LocalPlayer.controlHook = false;
         }
     }
 }

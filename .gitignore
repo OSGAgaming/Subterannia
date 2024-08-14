@@ -16,6 +16,9 @@
 /.vs
 *.lock
 *.props
-*.cache
 *.editorconfig
 *.cache
+obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+obj/Debug/net8.0/Subterannia.AssemblyInfo.cs
+Localization/en-US_Mods.Subterannia.hjson
+*.sln
