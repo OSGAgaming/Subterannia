@@ -17,7 +17,7 @@ using Terraria.Utilities;
 
 namespace Subterannia.Core.Utility
 {
-    public static partial class Util
+    public static partial class Utilities
     {
         // public static InteritosGlobalNPC Interitos(this NPC npc) => npc.GetGlobalNPC<InteritosGlobalNPC>();
         // public static InteritosGlobalProjectile Interitos(this Projectile proj) => proj.GetGlobalProjectile<InteritosGlobalProjectile>();

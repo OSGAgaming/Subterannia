@@ -1,6 +1,6 @@
 ﻿namespace Subterannia.Core.Utility
 {
-    public static partial class Utility
+    public static partial class Utilities
     {
         public static bool GetArgsOrDefault<T>(object[] args, out T val) => TryGetFromArray(args, 0, out val);
 

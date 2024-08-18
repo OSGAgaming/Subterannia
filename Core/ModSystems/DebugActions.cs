@@ -15,18 +15,25 @@ public class DebugActions : ModSystem
     private void Update(On_Main.orig_DoUpdate orig, Main self, ref GameTime gameTime)
     {
         orig(self, ref gameTime);
+        if (Main.gameMenu) return;
 
-        if (!Main.gameMenu && Main.LocalPlayer.controlHook)
+        if (Main.LocalPlayer.controlHook)
         {
             if(!Main.LocalPlayer.GetModPlayer<SubworldPlayer>().InSubworld)
             {
-                SubworldManager.EnterSubworld<CutsceneSubworld>();
+                //SubworldManager.EnterSubworld<CutsceneSubworld>();
             }
             else
             {
                 SubworldManager.ReturnToMainWorld();
             }
             Main.LocalPlayer.controlHook = false;
+        }
+
+        //TODO: Make 672 Util magic no.
+        if (Main.LocalPlayer.position.Y >= Main.bottomWorld - 672f - Main.LocalPlayer.height && !Main.LocalPlayer.GetModPlayer<SubworldPlayer>().InSubworld)
+        {
+            SubworldManager.EnterSubworld<CutsceneSubworld>();
         }
     }
 }

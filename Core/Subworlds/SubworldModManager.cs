@@ -3,12 +3,15 @@ using Terraria.ModLoader;
 
 namespace Subterannia
 {
-	public class SubworldInstanceManager : ILoad
+	public class SubworldInstance : ILoad
 	{
 		public bool IsSaving;
 
 		public void Load() { }
 
-		public void Unload() { }
+		public void Unload() 
+		{
+			IsSaving = false;
+		}
 	}
 }

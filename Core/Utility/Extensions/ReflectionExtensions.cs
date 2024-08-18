@@ -86,7 +86,7 @@ namespace Subterannia.Core.Utility
             return (result = default) != null;
         }
 
-        public static ConstructorInfo DefaultConstructor(this Type type, bool nonPublic = false) => nonPublic ? type.GetConstructor(Util.FlagsInstance, null, Type.EmptyTypes, null) : type.GetConstructor(Type.EmptyTypes);
+        public static ConstructorInfo DefaultConstructor(this Type type, bool nonPublic = false) => nonPublic ? type.GetConstructor(Utilities.FlagsInstance, null, Type.EmptyTypes, null) : type.GetConstructor(Type.EmptyTypes);
 
         public static bool CouldBeInstantiated(this Type type) => type.IsValueType || !type.IsAbstract && (type.IsGenericType == type.IsConstructedGenericType);
     }

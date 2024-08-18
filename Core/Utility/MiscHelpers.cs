@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 
 namespace Subterannia.Core.Utility
 {
-    public static partial class Util
+    public static partial class Utilities
     {
         // CLAMPS - Used to keep variables between certain values, mainly used for situations where the game keeps crashing or entity goes wild
         public static byte Clamp(byte value, byte minValue, byte maxValue) => value < minValue ? minValue : value > maxValue ? maxValue : value;

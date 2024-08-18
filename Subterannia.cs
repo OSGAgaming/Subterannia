@@ -26,7 +26,7 @@ namespace Subterannia
             {
                 Loadables = new List<ILoad>();
 
-                Type[] loadables = Util.GetInheritedClasses(typeof(ILoad));
+                Type[] loadables = Utilities.GetInheritedClasses(typeof(ILoad));
                 foreach (Type type in loadables)
                 {
                     ILoad loadable = Activator.CreateInstance(type) as ILoad;
@@ -52,7 +52,10 @@ namespace Subterannia
             if(Loadables != null) 
             {
                 for (int i = 0; i < Loadables.Count; i++)
+                {
+                    Loadables[i].Unload();
                     Loadables[i] = null;
+                }
 
                 Loadables.Clear();
 

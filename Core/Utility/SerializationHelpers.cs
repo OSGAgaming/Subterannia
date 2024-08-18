@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 
-namespace Subterannia.Core
+namespace Subterannia.Core.Utility
 {
-    public static partial class Utils
+    public static partial class Utilities
     {
         public static void SerializeToXML<T>(T objects, string fileName)
         {

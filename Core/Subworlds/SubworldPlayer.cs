@@ -25,7 +25,14 @@ namespace Subterannia.Core.Subworlds
 
         public override void PreUpdate()
         {
-            if (!InSubworld) PrimaryWorldName = Main.ActiveWorldFileData.Name;
+            if (!InSubworld && !Main.gameMenu)
+            {
+                PrimaryWorldName = Main.ActiveWorldFileData.Name;
+                if (Subterannia.GetLoadable<SubworldInstance>().IsSaving)
+                {
+                    Subterannia.GetLoadable<SubworldInstance>().IsSaving = false;
+                }
+            }
 
             CurrentSubworld?.PlayerUpdate(Player);
         }

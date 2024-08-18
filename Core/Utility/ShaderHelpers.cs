@@ -17,9 +17,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 
-namespace Subterannia.Core
+namespace Subterannia.Core.Utility
 {
-    public static partial class Utils
+    public static partial class Utilities
     {
         public static void ActivateScreenShader(string ShaderName, Vector2 vec = default)
         {

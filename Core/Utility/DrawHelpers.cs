@@ -11,7 +11,7 @@ using ReLogic.Graphics;
 
 namespace Subterannia.Core.Utility
 {
-    public static partial class Util
+    public static partial class Utilities
     {
         public static Vector2 DeltaScreen => Main.screenPosition - Main.screenLastPosition;
         public static void Draw(Texture2D tex, Vector2 position, Color colour, float scale, Rectangle frame = default)
@@ -82,6 +82,7 @@ namespace Subterannia.Core.Utility
 
             return zero;
         }
+
         public static void DrawBoxFill(Vector2 pos, int width, int height, Color tint) => Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, pos, new Rectangle(0, 0, width, height), tint);
         public static void DrawBoxFill(Rectangle rectangle, Color tint) => Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, rectangle.Location.ToVector2(), new Rectangle(0, 0, rectangle.Width, rectangle.Height), tint);
 

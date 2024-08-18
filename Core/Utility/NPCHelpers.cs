@@ -2,9 +2,9 @@
 using Terraria;
 using Terraria.ID;
 
-namespace Subterannia.Core
+namespace Subterannia.Core.Utility
 {
-    public static partial class Utils
+    public static partial class Utilities
     {
         public static bool AnyPlayerAlive
         {

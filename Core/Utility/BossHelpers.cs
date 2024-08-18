@@ -6,12 +6,12 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
-namespace Subterannia.Core
+namespace Subterannia.Core.Utility
 {
     // public delegate void ExtraAction();
 
     // todo: note to self, migrate stuff to utils
-    public static partial class Utils
+    public static partial class Utilities
     {
         #region Spawn helpers
 
