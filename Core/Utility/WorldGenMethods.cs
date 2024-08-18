@@ -40,9 +40,9 @@ namespace Subterannia.Core.Utility
 
         public static void FillRegion(Rectangle r, int type)
         {
-            for (int i = r.X; i < r.Width; i++)
+            for (int i = r.X; i < r.X + r.Width; i++)
             {
-                for (int j = r.Y; j < r.Height; j++)
+                for (int j = r.Y; j < r.Y + r.Height; j++)
                 {
                     WorldGen.PlaceTile(i, j, type);
                 }

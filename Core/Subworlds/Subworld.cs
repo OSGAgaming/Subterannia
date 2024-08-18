@@ -38,7 +38,7 @@ namespace Subterannia.Core.Subworlds
         { 
             get
             {
-                if (TotalWeight != 0) return GenerationCompletion / TotalWeight;
+                if (TotalWeight != 0) return GenerationWeight / TotalWeight;
                 else return 0;
             }
         }
