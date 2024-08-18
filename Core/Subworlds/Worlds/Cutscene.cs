@@ -53,7 +53,7 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
             Utilities.DrawBoxFill(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black);
             if (CurrentPass != null)
             {
-                Utilities.UITextToCenter(CurrentPass?.PassName ?? "Fetching Information", Color.White, new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 - 100), 0);
+                //Utilities.UITextToCenter(CurrentPass?.PassName ?? "Fetching Information", Color.White, new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 - 100), 0);
                 //Utilities.UITextToCenter((int)(GenerationCompletion * 100) + "%", Color.White, new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), 0);
             }
         }
