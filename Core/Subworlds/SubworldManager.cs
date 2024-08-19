@@ -85,6 +85,8 @@ namespace Subterannia.Core.Subworlds
             if (Subterannia.GetLoadable<SubworldInstance>().IsSaving) 
                 return;
 
+            currentSubworld = null;
+
             Subterannia.GetLoadable<SubworldInstance>().IsSaving = true;
             SoundEngine.PlaySound(SoundID.MenuClose);
             PreSaveAndQuit();
