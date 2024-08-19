@@ -17,6 +17,8 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
         public Asset<Texture2D> LoadingBar;
         public Asset<Texture2D> CenterPiece;
         public Asset<Texture2D> LoadingDrill;
+        public Asset<Texture2D> LoadingBarFill;
+
         private float SmoothedGenerationPercentage;
 
         public override Point Dimensions => new Point(500, 500);
@@ -34,7 +36,7 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
              0,
             () =>
             {
-                Utilities.FillRegion(new Rectangle(0,0,200,200), TileID.BlueDungeonBrick);
+                Utilities.FillRegion(new Rectangle(0, 0, 200, 200), TileID.BlueDungeonBrick);
             }));
 
             AddGenerationPass(new SubworldGenerationPass(
@@ -65,22 +67,23 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
 
                 Point center = new Point(Main.screenWidth / 2, Main.screenHeight / 2);
                 Utilities.UITextToCenter(
-                    CurrentPass?.PassName ?? "Fetching Information", 
-                    Color.White, 
+                    CurrentPass?.PassName ?? "Fetching Information",
+                    Color.White,
                     new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 - 100), 0);
 
                 Utilities.UITextToCenter(
-                    (int)(SmoothedGenerationPercentage * 100) + "%", 
-                    Color.White, 
+                    (int)(SmoothedGenerationPercentage * 100) + "%",
+                    Color.White,
                     new Vector2(Main.screenWidth / 2, Main.screenHeight / 2 + 100), 0);
 
                 LoadingBar ??= Utilities.GetTexture("SubworldAssets/LoadingBar");
                 CenterPiece ??= Utilities.GetTexture("SubworldAssets/LoadingBarMiddlePiece");
                 LoadingDrill ??= Utilities.GetTexture("SubworldAssets/LoadingBarDrill");
+                LoadingBarFill ??= Utilities.GetTexture("SubworldAssets/LoadingBarFill");
 
                 Texture2D bar = LoadingBar.Value;
 
-                sb.Draw(bar, new Vector2(center.X, center.Y), bar.Bounds, 
+                sb.Draw(bar, new Vector2(center.X, center.Y), bar.Bounds,
                     Color.White, 0, bar.TextureCenter(), 1f, SpriteEffects.None, 0f);
 
                 Texture2D drill = LoadingDrill.Value;
@@ -88,11 +91,20 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
                 int frameCount = 5;
                 int frame = ((int)Main.GameUpdateCount / speed) % frameCount;
 
-                sb.Draw(drill, new Vector2(center.X - bar.Width / 2 + SmoothedGenerationPercentage * bar.Width, center.Y),
-                    new Rectangle(0,(drill.Height / frameCount) * frame,drill.Width, drill.Height / frameCount),
-                    Color.White, 0, new Vector2(drill.Width/2, drill.Height / (2 * frameCount)), 1f, SpriteEffects.None, 0f);
 
                 Texture2D centerPiece = CenterPiece.Value;
+
+
+
+                Texture2D loadingBarFill = LoadingBarFill.Value;
+
+                sb.Draw(loadingBarFill, new Vector2(center.X - bar.Width / 2, center.Y - bar.Height / 2),
+                    new Rectangle(0, 0, (int)(loadingBarFill.Width * SmoothedGenerationPercentage), loadingBarFill.Height),
+                    Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+                sb.Draw(drill, new Vector2(center.X - bar.Width / 2 + SmoothedGenerationPercentage * bar.Width, center.Y),
+                    new Rectangle(0, (drill.Height / frameCount) * frame, drill.Width, drill.Height / frameCount),
+                    Color.White, 0, new Vector2(drill.Width / 2, drill.Height / (2 * frameCount)), 1f, SpriteEffects.None, 0f);
 
                 sb.Draw(centerPiece, new Vector2(center.X, center.Y), centerPiece.Bounds,
                     Color.White, 0, centerPiece.TextureCenter(), 1f, SpriteEffects.None, 0f);
