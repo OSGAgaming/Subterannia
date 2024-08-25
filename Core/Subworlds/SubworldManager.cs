@@ -82,12 +82,12 @@ namespace Subterannia.Core.Subworlds
 
         public static void EnterSubworld<T>() where T : Subworld, new()
         {
-            if (Subterannia.GetLoadable<SubworldInstance>().IsSaving) 
+            if (SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving) 
                 return;
 
             currentSubworld = null;
 
-            Subterannia.GetLoadable<SubworldInstance>().IsSaving = true;
+            SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving = true;
             SoundEngine.PlaySound(SoundID.MenuClose);
             PreSaveAndQuit();
             ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, new T());

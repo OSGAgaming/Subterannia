@@ -28,9 +28,9 @@ namespace Subterannia.Core.Subworlds
             if (!InSubworld && !Main.gameMenu)
             {
                 PrimaryWorldName = Main.ActiveWorldFileData.Name;
-                if (Subterannia.GetLoadable<SubworldInstance>().IsSaving)
+                if (SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving)
                 {
-                    Subterannia.GetLoadable<SubworldInstance>().IsSaving = false;
+                    SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving = false;
                 }
             }
 

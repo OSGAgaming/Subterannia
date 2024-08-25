@@ -59,7 +59,7 @@ namespace Subterannia.Core.Subworlds
             WorldGeneration();
             Generate();
 
-            Subterannia.GetLoadable<SubworldInstance>().IsSaving = false;
+            SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving = false;
         }
 
         public void AddGenerationPass(SubworldGenerationPass Pass) 

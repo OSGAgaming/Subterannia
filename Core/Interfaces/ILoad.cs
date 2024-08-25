@@ -12,4 +12,6 @@ namespace Subterannia.Core.Mechanics.Interfaces
         void Load();
         void Unload();
     }
+
+    public interface IMainThreadLoad : ILoad { }
 }

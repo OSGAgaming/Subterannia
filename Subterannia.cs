@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Subterannia.Core.Mechanics;
 using Subterannia.Core.Mechanics.Interfaces;
 using Subterannia.Core.Utility;
 using System;
@@ -14,10 +15,10 @@ using Terraria.UI;
 namespace Subterannia
 {
     // Please read https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide#mod-skeleton-contents for more information about the various files in a mod.
-    public class Subterannia : Mod
+    public partial class SubteranniaMod : Mod
     {
         private GameTime lastGameTime;
-
+        public static bool Loaded = false;
         public static List<ILoad> Loadables;
 
         public override void Load()
@@ -25,16 +26,21 @@ namespace Subterannia
             if (!Main.dedServ)
             {
                 Loadables = new List<ILoad>();
+                ShaderLoading();
 
                 Type[] loadables = Utilities.GetInheritedClasses(typeof(ILoad));
                 foreach (Type type in loadables)
                 {
+                    bool toBeRedirected = !typeof(IMainThreadLoad).IsAssignableFrom(type);
                     ILoad loadable = Activator.CreateInstance(type) as ILoad;
-                    loadable.Load();
+
+                    if (toBeRedirected) loadable.Load();
+                    
 
                     Loadables.Add(loadable);
                 }
 
+                Loaded = true;
                 Debug.WriteLine("Loaded!");
             }
         }
@@ -48,7 +54,9 @@ namespace Subterannia
         }
 
         public override void Unload()
-        {        
+        {       
+            UnloadShaders();
+
             if(Loadables != null) 
             {
                 for (int i = 0; i < Loadables.Count; i++)
@@ -60,6 +68,7 @@ namespace Subterannia
                 Loadables.Clear();
 
                 Loadables = null;
+                Loaded = false;
 
                 Debug.WriteLine("Unloaded!");
                 Debug.WriteLine("");
