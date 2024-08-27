@@ -5,6 +5,7 @@ float4x4 Projection;
 float4 AmbientColor = float4(1, 1, 1, 1);
 float AmbientIntensity = 0.1;
 float Progress;
+float3 worldColor;
 
 struct VertexShaderInput
 {
@@ -62,7 +63,8 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 		disp = 1;
 	float4 cloudColour = float4(1,1,1,1);
 	cloudColour *= disp * 1;
-	return cloudColour + add;
+	
+    return (cloudColour + add) * float4(worldColor, 1);
 }
 
 technique Ambient

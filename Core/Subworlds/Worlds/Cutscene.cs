@@ -12,7 +12,7 @@ using ReLogic.Content;
 
 namespace Subterannia.Core.Subworlds.LinuxSubworlds
 {
-    public class CutsceneSubworld : Subworld
+    public partial class CutsceneSubworld : Subworld
     {
         public Asset<Texture2D> LoadingBar;
         public Asset<Texture2D> CenterPiece;
@@ -26,35 +26,6 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
         public override Point SpawnTile => new Point(10, 200);
 
         public override string Name => "Cutscene";
-
-        public override void WorldGeneration()
-        {
-            SmoothedGenerationPercentage = 0;
-
-            AddGenerationPass(new SubworldGenerationPass(
-            "Fill Region",
-             0,
-            () =>
-            {
-                Utilities.FillRegion(new Rectangle(0, 0, 200, 200), TileID.BlueDungeonBrick);
-            }));
-
-            AddGenerationPass(new SubworldGenerationPass(
-            "Fill Region 2",
-            0.1f,
-            () =>
-            {
-                Utilities.FillRegion(new Rectangle(200, 200, 200, 200), TileID.BlueDungeonBrick);
-            }));
-
-            AddGenerationPass(new SubworldGenerationPass(
-            "Fill Region 3",
-            0.2f,
-            () =>
-            {
-                Utilities.FillRegion(new Rectangle(0, 200, 200, 200), TileID.BlueDungeonBrick);
-            }));
-        }
 
         public override void PlayerUpdate(Player player) { }
 
@@ -93,9 +64,6 @@ namespace Subterannia.Core.Subworlds.LinuxSubworlds
 
 
                 Texture2D centerPiece = CenterPiece.Value;
-
-
-
                 Texture2D loadingBarFill = LoadingBarFill.Value;
 
                 sb.Draw(loadingBarFill, new Vector2(center.X - bar.Width / 2, center.Y - bar.Height / 2),

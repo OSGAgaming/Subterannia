@@ -60,6 +60,10 @@ namespace Subterannia.Core.Subworlds
             Generate();
 
             SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving = false;
+
+            Main.Map.Clear();
+            Main.refreshMap = true;
+            Main.clearMap = true;
         }
 
         public void AddGenerationPass(SubworldGenerationPass Pass) 

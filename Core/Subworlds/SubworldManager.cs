@@ -162,11 +162,14 @@ namespace Subterannia.Core.Subworlds
         {
             SoundEngine.PlaySound(SoundID.MenuOpen);
             WorldGen.clearWorld();
+            Main.ActiveWorldFileData.SetSeedToRandom();
+            WorldGen._genRand = new UnifiedRandom(Main.ActiveWorldFileData.Seed);
             GenerateWorld((Subworld)threadContext, Main.ActiveWorldFileData.Seed, null);
             WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
 
             if (Main.menuMode == 10 || Main.menuMode == 888) Main.menuMode = 6;
             WorldGen.generatingWorld = false;
+            WorldGen.gen = false;
         }
 
         public static void GenerateWorld(Subworld subworld, int seed, GenerationProgress customProgressObject = null)
@@ -241,6 +244,9 @@ namespace Subterannia.Core.Subworlds
 
                     WorldGen.playWorld();
                     Main.menuMode = 10;
+                    Main.Map.Clear();
+                    Main.refreshMap = true;
+                    Main.clearMap = true;
 
                     return;
                 } 

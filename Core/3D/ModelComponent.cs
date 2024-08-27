@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Subterannia.Core.Mechanics.Interfaces;
 using Subterannia.Core.Utility;
 using ReLogic.Content;
+using Terraria.Graphics.Light;
 
 namespace Subterannia.Core.Mechanics
 {
@@ -35,15 +36,18 @@ namespace Subterannia.Core.Mechanics
         public float YCull = -float.MaxValue;
         public List<Vector3> Colors;
 
-        public ModelComponent(Model currentModelInput, bool HasTexture = false, Asset<Effect> effect = null)
+        public ModelComponent(Model currentModelInput, bool HasTexture = false, Asset<Effect> effect = null, string Layer = null)
         {
             Model model = currentModelInput;
             Model = model;
             this.HasTexture = HasTexture;
-
+            
             Transform.Scale = 1;
             Effect = effect;
             Colors = new List<Vector3>();
+
+            if (Layer != null) this.Layer = Layer;
+            else this.Layer = "Default";
 
             if (effect == null)
                 return;
@@ -69,7 +73,7 @@ namespace Subterannia.Core.Mechanics
         public void Draw(SpriteBatch spriteBatch)
         {
             Vector2 v = new Vector2(Transform.Position.X, Transform.Position.Y);
-            v = v.ForDraw() - Main.ScreenSize.ToVector2()/2;
+            v =  Main.ScreenSize.ToVector2()/2 - v.ForDraw();
 
             Matrix world =
                       Matrix.CreateRotationX(Transform.Rotation.X)
@@ -123,6 +127,9 @@ namespace Subterannia.Core.Mechanics
                                     effect.TextureEnabled = false;
                                 }
                             }
+                            Vector3 c = Utilities.GetWorldLighting(Transform.Position.XY()).ToVector3();
+                            effect.AmbientLightColor = c;
+                            effect.DiffuseColor = c;
                             effect.World = mesh.ParentBone.Transform * world;
                             effect.View = view;
                             effect.Projection = projection;

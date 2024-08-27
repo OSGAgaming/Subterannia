@@ -21,6 +21,11 @@ public class LoadMainThread : ModSystem
         On_Main.DoUpdate += Update;
     }
 
+    public override void Unload()
+    {
+        Loaded = false;
+    }
+
     private void Update(On_Main.orig_DoUpdate orig, Main self, ref GameTime gameTime)
     {
         orig(self, ref gameTime);

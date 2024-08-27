@@ -19,6 +19,8 @@ namespace Subterannia.Core.Mechanics
 
         public ModelComponent Doodle1;
         public ModelComponent Doodle2;
+        public ModelComponent Statue;
+        public ModelComponent Rat;
 
         public Asset<Texture2D> Noise;
 
@@ -27,15 +29,9 @@ namespace Subterannia.Core.Mechanics
             Noise ??= Utilities.GetTexture("Maps/noise",AssetRequestMode.ImmediateLoad);
 
             Clouds = new ModelComponent(ModelRepository.Clouds, false, SubteranniaMod.ExampleModelShader);
-            Clouds.Layer = "Default";
-            Clouds.ShaderParameters = (effect) =>
-            {
-                effect.Parameters["Progress"]?.SetValue(Main.GameUpdateCount);
-                effect.Parameters["noiseTexture"]?.SetValue(Noise.Value);
-            };
+
 
             Planets = new ModelComponent(ModelRepository.Planet, false);
-            Planets.Layer = "Default";
             Planets.ShaderParameters = (effect) =>
             {
                 effect.Parameters["Progress"]?.SetValue(Main.GameUpdateCount);
@@ -43,16 +39,19 @@ namespace Subterannia.Core.Mechanics
             };
 
             Doodle1 = new ModelComponent(ModelRepository.Doodle, false);
-            Doodle1.Layer = "Default";
 
             Doodle2 = new ModelComponent(ModelRepository.Doodle, false);
-            Doodle2.Layer = "Default";
+
+            Statue = new ModelComponent(ModelRepository.Statue, false);
+            Rat = new ModelComponent(ModelRepository.Rat, false);
 
             //==================Drawables=====================
             Drawables.Add(Planets);
             Drawables.Add(Clouds);
-            Drawables.Add(Doodle1);
-            Drawables.Add(Doodle2);
+            //Drawables.Add(Doodle1);
+            //Drawables.Add(Doodle2);
+            Drawables.Add(Statue);
+            Drawables.Add(Rat);
         }
 
         public override void OnDeactivate() 
@@ -66,35 +65,53 @@ namespace Subterannia.Core.Mechanics
 
             Planets.Transform.Position.Z = 1000f;
             Planets.Transform.Scale = 0.4f;
-            Planets.Transform.Position.X = Main.LocalPlayer.Center.X;
-            Planets.Transform.Position.Y = Main.LocalPlayer.Center.Y + 100;
+            Planets.Transform.Position.X = Main.LocalPlayer.Center.X + 70;
+            Planets.Transform.Position.Y = Main.LocalPlayer.Center.Y;
             Planets.Transform.Rotation.Y += 0.03f;
 
             Clouds.Transform.Position.Z = 1000f;
-            Clouds.Transform.Position.X = Main.LocalPlayer.Center.X;
-            Clouds.Transform.Position.Y = Main.LocalPlayer.Center.Y + 100;
+            Clouds.Transform.Position.X = Main.LocalPlayer.Center.X + 70;
+            Clouds.Transform.Position.Y = Main.LocalPlayer.Center.Y;
             Clouds.Transform.Scale = 0.5f;
             Clouds.Transform.Rotation.Y += 0.01f;
 
-            Doodle1.Transform.Position.Z = 1000f;
-            Doodle2.Transform.Position.Z = 1000f;
+            //Doodle1.Transform.Position.Z = 1000f;
+            //Doodle2.Transform.Position.Z = 1000f;
 
-            Doodle1.Transform.Position.X = Main.LocalPlayer.Center.X + (float)Math.Sin(Main.GameUpdateCount / 40f) * 200;
-            Doodle1.Transform.Position.Y = Main.LocalPlayer.Center.Y - 100;
+            //Doodle1.Transform.Position.X = Main.LocalPlayer.Center.X + (float)Math.Sin(Main.GameUpdateCount / 40f) * 200;
+            //Doodle1.Transform.Position.Y = Main.LocalPlayer.Center.Y - 100;
 
-            Doodle1.Transform.Scale = 0.1f;
-            Doodle1.Transform.Rotation.Z += 0.05f;
-            Doodle1.Transform.Rotation.Y += 0.1f;
-            Doodle1.Transform.Rotation.X = 0f;
+            //Doodle1.Transform.Scale = 0.1f;
+            //Doodle1.Transform.Rotation.Z += 0.05f;
+            //Doodle1.Transform.Rotation.Y += 0.1f;
+            //Doodle1.Transform.Rotation.X = 0f;
 
-            Doodle2.Transform.Position.X = Main.LocalPlayer.Center.X - (float)Math.Sin(Main.GameUpdateCount / 40f) * 200;
-            Doodle2.Transform.Position.Y = Main.LocalPlayer.Center.Y - 100;
+            //Doodle2.Transform.Position.X = Main.LocalPlayer.Center.X - (float)Math.Sin(Main.GameUpdateCount / 40f) * 200;
+            //Doodle2.Transform.Position.Y = Main.LocalPlayer.Center.Y - 100;
 
-            Doodle2.Transform.Scale = 0.1f;
-            Doodle2.Transform.Rotation.Z -= 0.05f;
-            Doodle2.Transform.Rotation.Y -= 0.1f;
-            Doodle2.Transform.Rotation.X = 0f;
+            //Statue.Transform.Position.X = Main.LocalPlayer.Center.X - (float)Math.Sin(Main.GameUpdateCount / 40f) * 200;
+            //Statue.Transform.Position.Y = Main.LocalPlayer.Center.Y - 100;
+            //Statue.Transform.Scale = 4f;
+            //Statue.Transform.Position.Z = 1000;
+            //Statue.Transform.Rotation.Y -= 0.05f;
+            //Statue.Transform.Rotation.Z = 0f;
 
+            //Doodle2.Transform.Scale = 0.1f;
+            //Doodle2.Transform.Rotation.Z -= 0.05f;
+            //Doodle2.Transform.Rotation.Y -= 0.1f;
+            //Doodle2.Transform.Rotation.X = 0f;
+
+            //Rat.Transform.Position.X = Main.LocalPlayer.Center.X - (float)Math.Sin(Main.GameUpdateCount / 40f) * 200;
+            //Rat.Transform.Position.Y = Main.LocalPlayer.Center.Y - 300;
+            //Rat.Transform.Position.Z = 1000f;
+            //Rat.Transform.Rotation.Y -= 0.05f;
+
+            Clouds.ShaderParameters = (effect) =>
+            {
+                effect.Parameters["Progress"]?.SetValue(Main.GameUpdateCount);
+                effect.Parameters["noiseTexture"]?.SetValue(Noise.Value);
+                effect.Parameters["worldColor"]?.SetValue(Utilities.GetWorldLighting(Clouds.Transform.Position.XY()).ToVector3());
+            };
         }
     }
 }

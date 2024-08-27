@@ -696,5 +696,64 @@ namespace Subterannia.Core.Utility
             while ((percent / total) > 1f && (currentID < vectors.Length - 2)) { total += per; currentID++; }
             return Vector2.Lerp(vectors[currentID], vectors[currentID + 1], (percent - (per * currentID)) / per);
         }
+
+        public static Vector2 XY(this Vector3 v) => new Vector2(v.X, v.Y);
+
+        public static Vector2 AngleToVec(float angle) => new Vector2((float)Math.Sin(angle), (float)Math.Cos(angle));
+
+        public static byte[,] CreateCellNoise(Rectangle bounds, int iterations, float density)
+        {
+            byte[,] grid = new byte[bounds.Width, bounds.Height];
+
+            int w = bounds.Width;
+            int h = bounds.Height;
+
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+                    float a = Main.rand.NextFloat(1);
+                    if (a < density) grid[i, j] = 1;
+                }
+            }
+
+            for (int s = 0; s < iterations; s++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    for (int j = 0; j < h; j++)
+                    {
+                        int neighbourCount = 0;
+                        for (int a = -1; a < 2; a++)
+                        {
+                            for (int b = -1; b < 2; b++)
+                            {
+                                if (a != 0 || b != 0)
+                                {
+                                    if (i + a > bounds.Width - 1 ||
+                                        j + b > bounds.Height - 1 ||
+                                        i + a < 0 ||
+                                        j + b < 0)
+                                    {
+                                        neighbourCount++;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        neighbourCount += grid[i + a, j + b];
+                                    }
+                                }
+                            }
+                        }
+
+                        if (neighbourCount > 4) grid[i, j] = 1;
+                        else grid[i, j] = 0;
+                    }
+                }
+            }
+
+            return grid;
+        }
+
     }
 }

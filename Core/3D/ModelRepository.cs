@@ -26,5 +26,9 @@ namespace Subterannia.Core.Mechanics
         public static Model Planet;
         [ModelPath("earthen_greatsword")]
         public static Model Doodle;
+        [ModelPath("statue_with_texture")]
+        public static Model Statue;
+        [ModelPath("rat")]
+        public static Model Rat;
     }
 }

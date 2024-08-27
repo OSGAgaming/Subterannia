@@ -22,6 +22,26 @@ namespace Subterannia.Core.Subworlds
         private void DrawOver(On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
         {
             orig(self, gameTime);
+
+            if (!Main.gameMenu || !SubteranniaMod.Loaded) return;
+
+
+            if (SubteranniaMod.GetLoadable<SubworldInstance>().IsSaving)
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+                    Main.SamplerStateForCursor, DepthStencilState.None,
+                    RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+
+                if (SubworldManager.currentSubworld == null) DefaultLoadingUI(Main.spriteBatch);
+                else SubworldManager.currentSubworld.DrawLoadingUI(Main.spriteBatch);
+
+                Main.spriteBatch.End();
+            }
+        }
+
+        public void DefaultLoadingUI(SpriteBatch sb)
+        {
+            Utilities.DrawBoxFill(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black);
         }
     }
 }

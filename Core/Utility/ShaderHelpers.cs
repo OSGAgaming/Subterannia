@@ -30,6 +30,11 @@ namespace Subterannia.Core.Utility
         }
 
         public static ScreenShaderData GetScreenShader(string ShaderName) => Filters.Scene[ShaderName].GetShader();
-        
+
+        public static Color GetWorldLighting(Vector2 v) => Lighting.GetColor(new Point((int)v.X / 16, (int)v.Y / 16));
+
+        public static Vector3 ColorToVector(Color c) => new Vector3(c.R, c.G, c.B);
+
+
     }
 }
